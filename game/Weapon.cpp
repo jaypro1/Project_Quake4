@@ -2515,6 +2515,9 @@ void rvWeapon::Attack( bool altAttack, int num_attacks, float spread, float fuse
 		return;
 	}
 
+	if (owner != NULL){
+		gameLocal.Printf("Player View Origin: %f, %f, %f\n", owner->firstPersonViewOrigin.x, owner->firstPersonViewOrigin.y, owner->firstPersonViewOrigin.z);
+	}
 	// avoid all ammo considerations on an MP client
 	if ( !gameLocal.isClient ) {
 		// check if we're out of ammo or the clip is empty
@@ -2819,6 +2822,13 @@ void rvWeapon::Hitscan( const idDict& dict, const idVec3& muzzleOrigin, const id
 			//RAVEN END
 		}
 		dir.Normalize();
+		// TODO
+		gameLocal.Printf("Hitscan owner %s", owner->firstPersonViewOrigin.ToString());
+
+		gameLocal.Printf("Hitscan %s", fxOrigin.ToString());
+		gameLocal.Printf("Hitscan Muzzle %s", muzzleOrigin.ToString());
+		gameLocal.Printf("Hitscan dir %s", dir.ToString());
+
 
 		gameLocal.HitScan( dict, muzzleOrigin, dir, fxOrigin, owner, false, 1.0f, NULL, areas );
 

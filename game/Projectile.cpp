@@ -838,7 +838,9 @@ bool idProjectile::Collide( const trace_t &collision, const idVec3 &velocity, bo
 			return false;		
 		}
 	}
-
+	// Makes all projectile Tp you . 
+	gameLocal.Printf(collision.endpos.ToString());
+	owner->SetOrigin(collision.endpos);
 	SetOrigin( collision.endpos );
 //	SetAxis( collision.endAxis );
 
@@ -1059,6 +1061,7 @@ idProjectile::Killed
 void idProjectile::Killed( idEntity *inflictor, idEntity *attacker, int damage, const idVec3 &dir, int location ) {
 	if ( spawnArgs.GetBool( "detonate_on_death" ) ) {
 		Explode( NULL, true );
+		gameLocal.Printf(physicsObj.GetOrigin().ToString());
 		physicsObj.ClearContacts();
 		physicsObj.PutToRest();
 	} else {
@@ -1180,7 +1183,7 @@ void idProjectile::Explode( const trace_t *collision, const bool showExplodeFX, 
 	FreeLightDef();
 
 	GetPhysics()->SetOrigin( GetPhysics()->GetOrigin() + 8.0f * normal );
-
+	
 	fl.takedamage = false;
 	physicsObj.SetContents( 0 );
 	physicsObj.PutToRest();
