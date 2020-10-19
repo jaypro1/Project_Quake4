@@ -127,7 +127,7 @@ entityDef weapon_nailgun
 	"def_altprojectile"			"projectile_nail_seek"
 	"ammoType"					"ammo_nailgun"
 	"ammoRequired"				"1"
-	"clipSize"					"50"
+	"clipSize"					"5" //was 50
 	"lowAmmo"					"1"
 
 	"mtr_flashShader"			"lights/muzzleflash"
@@ -328,9 +328,9 @@ entityDef wpmod_nailgun_power
 	"mod_showsurface2"			"models/weapons/nailgun_mod_ammo"
 	"mod_hidesurface"			"models/weapons/nailgun_clip"
 
-	"fireRate"					".12"
-	"drumSpeed"					"1.25"
-	"clipSize"					"100"
+	"fireRate"					"1" // was .12
+	"drumSpeed"					"0.50" // was 1.25
+	"clipSize"					"5" //was 100
 }
 
 entityDef wpmod_nailgun_seek
@@ -364,7 +364,7 @@ entityDef weaponmod_nailgun_power
 	"spawnclass"				"idItem"
 	"size"						"32 32 32"
 	"inv_weaponmod"				"wpmod_nailgun_power"
-	"inv_ammo_nailgun"			"100"
+	"inv_ammo_nailgun"			"5" //was 100
 	"inv_item"					"1"
 	"inv_icon"					"gfx/guis/hud/icons/item_nailgun.tga"
 	"inv_name"					"#str_107436"
@@ -384,7 +384,7 @@ entityDef weaponmod_nailgun_seek
 	"spawnclass"				"idItem"
 	"size"						"32 32 32"
 	"inv_weaponmod"				"wpmod_nailgun_seek"
-	"inv_ammo_nailgun"			"100"
+	"inv_ammo_nailgun"			"5" // was 100
 	"inv_item"					"1"
 	"inv_icon"					"gfx/guis/hud/icons/item_nailgun.tga"
 	"inv_name"					"#str_107438"
@@ -417,17 +417,21 @@ entityDef projectile_nail
 	"model"						"models/weapons/nailgun/nail.ase"
 	"def_damage"				"damage_nailDirect"
 	"def_splash_damage"			"damage_nailSplash"
-																											
+																
 	"health"					"0"
-	"speed"						"1200"
-	"gravity"					"0"
-	"fuse"						"4"
-								
+	"speed"						"700" //was 1200
+	"gravity"					".5" //was 0
+	"fuse"						"4" // was 4
+
+	"bounce_count"				"1" // New field
+	"bounce"					".65" // New field
+	"teleport_player"			"1" // New Field
+
 	"detonate_on_fuse"			"1"
 	"detonate_on_death"			"0"
-	"detonate_on_world"			"1"
-	"detonate_on_actor"			"1"
-	"detonate_on_bounce"		"1"
+	"detonate_on_world"			"1" //was 1
+	"detonate_on_actor"			"0" // was 1
+	"detonate_on_bounce"		"0" // was 1
 																
 	"decal_size"				"8"
 
@@ -468,7 +472,7 @@ entityDef projectile_nail_seek
 	"inherit"					"projectile_nail"
 	"spawnclass"				"idGuidedProjectile"
 
-	"speed"						"700"
+	"speed"						"700" //was 700
 	
 	"turn_max"					"1800"
 	"turn_accel"				".5"
@@ -481,7 +485,7 @@ entityDef projectile_nail_seek
 
 entityDef damage_nailDirect 
 {
-	"damage"					"25"
+	"damage"					"0" // was 25
 //	"push"						"1000"
 	"gib"						"0"
 
@@ -494,7 +498,7 @@ entityDef damage_nailDirect
 
 entityDef damage_nailSplash 
 {
-	"damage"					"25"
+	"damage"					"0" // was 25
 	"radius"					"50"
 	"knockback"					"5"
 	"push"						"0"
