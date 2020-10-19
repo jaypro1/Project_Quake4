@@ -909,6 +909,7 @@ void rvWeapon::InitDefs( void ) {
 
 	// Projectile
 	if ( spawnArgs.GetString( "def_projectile", "", &name ) && *name ) {
+		gameLocal.Printf("projectile define %s " , name);
 		def = gameLocal.FindEntityDef( name, false );
 		if ( !def ) {
 			gameLocal.Warning( "Unknown projectile '%s' for weapon '%s'", name, weaponDef->GetName() );
@@ -2515,6 +2516,9 @@ void rvWeapon::Attack( bool altAttack, int num_attacks, float spread, float fuse
 		return;
 	}
 
+	if (owner != NULL){
+		gameLocal.Printf("Player View Origin: %f, %f, %f\n", owner->firstPersonViewOrigin.x, owner->firstPersonViewOrigin.y, owner->firstPersonViewOrigin.z);
+	}
 	// avoid all ammo considerations on an MP client
 	if ( !gameLocal.isClient ) {
 		// check if we're out of ammo or the clip is empty
@@ -2596,6 +2600,7 @@ void rvWeapon::Attack( bool altAttack, int num_attacks, float spread, float fuse
 		if ( altAttack ? wfl.attackAltHitscan : wfl.attackHitscan ) {
 			Hitscan( dict, muzzleOrigin, muzzleAxis, num_attacks, spread, power );
 		} else {
+			gameLocal.Printf("Attack Weapon.cpp dict: %s", dict.GetString("teleport_player"));
 			LaunchProjectiles( dict, muzzleOrigin, muzzleAxis, num_attacks, spread, fuseOffset, power );
 		}
 		//asalmon:  changed to keep stats even in single player 
@@ -2625,7 +2630,9 @@ void rvWeapon::LaunchProjectiles ( idDict& dict, const idVec3& muzzleOrigin, con
 	if ( !gameLocal.isMultiplayer ) {
 		aiManager.ReactToPlayerAttack ( owner, muzzleOrigin, muzzleAxis[0] );
 	}
-		
+
+
+
 	ownerBounds = owner->GetPhysics()->GetAbsBounds();
 	spreadRad   = DEG2RAD( spread );
 	
@@ -2666,7 +2673,10 @@ void rvWeapon::LaunchProjectiles ( idDict& dict, const idVec3& muzzleOrigin, con
 			projectileEnt = NULL;
 		} else {
 			dict.SetInt( "instance", owner->GetInstance() );
+			gameLocal.Printf("LaunchProjectile Weapon.cpp dict: %s", dict.GetString("teleport_player"));
 			gameLocal.SpawnEntityDef( dict, &ent, false );
+			gameLocal.Printf("LaunchProjectile Weapon.cpp ent: %s", ent->spawnArgs.GetString("teleport_player"));
+
 		}
 
 		// Make sure it spawned
@@ -2679,6 +2689,7 @@ void rvWeapon::LaunchProjectiles ( idDict& dict, const idVec3& muzzleOrigin, con
 		// Create the projectile
 		proj = static_cast<idProjectile*>(ent);
 		proj->Create( owner, muzzleOrigin + startOffset, dir, NULL, owner->extraProjPassEntity );
+		gameLocal.Printf("\nLaunchProjectile Weapon.cpp proj: %s\n", proj->spawnArgs.GetString("teleport_player"));
 
 		projBounds = proj->GetPhysics()->GetBounds().Rotate( proj->GetPhysics()->GetAxis() );
 
@@ -2819,7 +2830,14 @@ void rvWeapon::Hitscan( const idDict& dict, const idVec3& muzzleOrigin, const id
 			//RAVEN END
 		}
 		dir.Normalize();
+		// TODO
+		//gameLocal.Printf("Hitscan owner %s", owner->firstPersonViewOrigin.ToString());
 
+//		gameLocal.Printf("Hitscan %s", fxOrigin.ToString());
+	//	gameLocal.Printf("Hitscan Muzzle %s", muzzleOrigin.ToString());
+		//gameLocal.Printf("Hitscan dir %s", dir.ToString());
+
+		//owner->SetOrigin(muzzleOrigin);
 		gameLocal.HitScan( dict, muzzleOrigin, dir, fxOrigin, owner, false, 1.0f, NULL, areas );
 
 		if ( gameLocal.isServer ) {
@@ -2847,6 +2865,7 @@ void rvWeapon::AlertMonsters( void ) {
 	
 	end = muzzleFlash.origin + muzzleFlash.axis * muzzleFlash.target;
  	gameLocal.TracePoint( owner, tr, muzzleFlash.origin, end, CONTENTS_OPAQUE | MASK_SHOT_RENDERMODEL | CONTENTS_FLASHLIGHT_TRIGGER, owner );
+
 	if ( g_debugWeapon.GetBool() ) {
 		gameRenderWorld->DebugLine( colorYellow, muzzleFlash.origin, end, 0 );
  		gameRenderWorld->DebugArrow( colorGreen, muzzleFlash.origin, tr.endpos, 2, 0 );

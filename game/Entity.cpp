@@ -3132,7 +3132,6 @@ bool idEntity::RunPhysics( void ) {
 	bool		moved;
 
 	moved = false;
-
 // RAVEN BEGIN
 // jnewquist: Tag scope and callees to track allocations using "new".
 	MEM_SCOPED_TAG(tag,MA_PHYSICS);

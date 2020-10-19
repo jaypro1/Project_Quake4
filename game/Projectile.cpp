@@ -459,7 +459,11 @@ void idProjectile::Launch( const idVec3 &start, const idVec3 &dir, const idVec3 
 			if ( fuse < 0.0f ) {
 				fuse = 0.0f;
 			}
+			gameLocal.Printf("RenderEntity Before: %s\n", owner->GetRenderEntity()->origin.ToString());
+
 			PostEventSec( &EV_Explode, fuse );
+			gameLocal.Printf("RenderEntity After: %s\n", owner->GetRenderEntity()->origin.ToString());
+
 		} else {
 			fuse -= timeSinceFire;
 			if ( fuse < 0.0f ) {
@@ -838,7 +842,16 @@ bool idProjectile::Collide( const trace_t &collision, const idVec3 &velocity, bo
 			return false;		
 		}
 	}
-
+	// Makes all projectile Tp you .
+	gameLocal.Printf("spawnargs projectile\n");
+	spawnArgs.Print();
+	gameLocal.Printf("\narg value: %s \n",spawnArgs.GetString("teleport_player"));
+	if (spawnArgs.GetBool("teleport_player")){
+		// IF Teleport. then teleport player. 
+		gameLocal.Printf(collision.endpos.ToString());
+		owner->SetOrigin(collision.endpos);
+	}
+	
 	SetOrigin( collision.endpos );
 //	SetAxis( collision.endAxis );
 
@@ -1059,6 +1072,7 @@ idProjectile::Killed
 void idProjectile::Killed( idEntity *inflictor, idEntity *attacker, int damage, const idVec3 &dir, int location ) {
 	if ( spawnArgs.GetBool( "detonate_on_death" ) ) {
 		Explode( NULL, true );
+		gameLocal.Printf("killed %s\n",physicsObj.GetOrigin().ToString());
 		physicsObj.ClearContacts();
 		physicsObj.PutToRest();
 	} else {
@@ -1180,7 +1194,7 @@ void idProjectile::Explode( const trace_t *collision, const bool showExplodeFX, 
 	FreeLightDef();
 
 	GetPhysics()->SetOrigin( GetPhysics()->GetOrigin() + 8.0f * normal );
-
+	//gameLocal.Printf("explode: %s",GetPhysics()->GetOrigin().ToString());
 	fl.takedamage = false;
 	physicsObj.SetContents( 0 );
 	physicsObj.PutToRest();
@@ -1310,7 +1324,12 @@ void idProjectile::Event_Explode( void ) {
 	// events are processed outside of the think loop, so set the current thinking ent appropriately
 	idEntity* think = gameLocal.currentThinkingEntity;
 	gameLocal.currentThinkingEntity = this;
+	//TODO 
+	//gameLocal.Printf("RenderEntity Before: %s\n", think->GetRenderEntity()->origin.ToString());
+
 	Explode( NULL, true );
+	//gameLocal.Printf("RenderEntity After: %s\n", think->GetRenderEntity()->origin.ToString());
+
 	gameLocal.currentThinkingEntity = think;
 }
 
