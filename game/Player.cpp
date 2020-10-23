@@ -3618,7 +3618,17 @@ idPlayer::DrawHUD
 */
 void idPlayer::DrawHUD( idUserInterface *_hud ) {
 	idUserInterface * cursor = idPlayer::cursor;
- 
+	if (GetRenderView()){
+		//gameLocal.Printf("HUD Draw\n");
+		
+		idVec3 vp = GetRenderView()->vieworg;
+		idVec3 vs = *new idVec3(9188, -7000, 69);
+		idVec3 va = *new idVec3(vs - vp);
+		idVec3 vc = GetRenderView()->viewaxis.ToAngles().ToForward();
+		//gameLocal.Printf("%s:%i: va X: %f ,,, vc X: %f\n", __FILE__, __LINE__, va.ToAngles().yaw, vc.ToAngles().yaw);
+
+		hud->SetStateFloat("compass_angle", va.ToAngles().yaw - vc.ToAngles().yaw);
+	}
 	if ( !gameLocal.GetLocalPlayer() ) {
 		// server netdemo
 		if ( gameLocal.GetDemoState() == DEMO_PLAYING && gameLocal.IsServerDemo() && gameLocal.GetDemoFollowClient() == entityNumber ) {

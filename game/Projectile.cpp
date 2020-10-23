@@ -459,10 +459,10 @@ void idProjectile::Launch( const idVec3 &start, const idVec3 &dir, const idVec3 
 			if ( fuse < 0.0f ) {
 				fuse = 0.0f;
 			}
-			gameLocal.Printf("RenderEntity Before: %s\n", owner->GetRenderEntity()->origin.ToString());
+			//gameLocal.Printf("RenderEntity Before: %s\n", owner->GetRenderEntity()->origin.ToString());
 
 			PostEventSec( &EV_Explode, fuse );
-			gameLocal.Printf("RenderEntity After: %s\n", owner->GetRenderEntity()->origin.ToString());
+			//gameLocal.Printf("RenderEntity After: %s\n", owner->GetRenderEntity()->origin.ToString());
 
 		} else {
 			fuse -= timeSinceFire;
@@ -842,10 +842,52 @@ bool idProjectile::Collide( const trace_t &collision, const idVec3 &velocity, bo
 			return false;		
 		}
 	}
-	// Makes all projectile Tp you .
-	gameLocal.Printf("spawnargs projectile\n");
-	spawnArgs.Print();
+
 	gameLocal.Printf("\narg value: %s \n",spawnArgs.GetString("teleport_player"));
+	///gameLocal.Printf("%s:%i: playerViewAxis: %s\n", __FILE__, __LINE__, owner->renderView->viewaxis.ToString());
+	
+	/**
+		gameLocal.Printf("%s:%i: playerViewAxis to angle: %s\n", __FILE__, __LINE__, owner->renderView->viewaxis.ToAngles().ToString());
+	gameLocal.Printf("%s:%i: angle against defined point: %s\n", __FILE__, __LINE__, owner->renderView->viewaxis.ToString());
+	idVec3 vp = owner->renderView->vieworg;
+	idVec3 vs = *new idVec3(9188, -7000, 69);
+	idVec3 va = *new idVec3(vs-vp);
+	idVec3 vb = owner->GetRenderView()->viewaxis.ToAngularVelocity();
+	idVec3 vc = owner->GetRenderView()->viewaxis.ToAngles().ToForward();
+	//gameLocal.Printf("%s:%i: vb angular: %s\n", __FILE__, __LINE__,vb.ToString());
+	gameLocal.Printf("%s:%i: Player Origin: %s\n", __FILE__, __LINE__, vp.ToString());
+	gameLocal.Printf("%s:%i: vc to angle to forward: %s\n", __FILE__, __LINE__, vc.ToString());
+	gameLocal.Printf("%s:%i: va to angle: %s\n", __FILE__, __LINE__, va.ToAngles().ToString());
+	gameLocal.Printf("%s:%i: va to angle to forward: %s\n", __FILE__, __LINE__, va.ToAngles().ToForward().ToString());
+
+	// ANSWER to my Orientation. COMPASS TODO
+	gameLocal.Printf("%s:%i: va X: %f ,,, vc X: %f\n", __FILE__, __LINE__, va.ToAngles().yaw, vc.ToAngles().yaw);
+	gameLocal.Printf("%s:%i: va X: %s ,,, vc X: %f\s", __FILE__, __LINE__, va.ToAngles().Normalize360().ToString(), vc.ToAngles().ToString());
+
+	
+	
+	idVec3* savePointModded = new idVec3(9188,-7000,69);
+	idVec3* playerViewModded = &owner->renderView->viewaxis.ToAngles().ToForward();
+	gameLocal.Printf("%s:%i: player angle forward.: %s\n", __FILE__, __LINE__, playerViewModded->ToString());
+	
+	gameLocal.Printf("%s:%i: player viewOrg - savePoint.: owner: %s", __FILE__, __LINE__, (owner->renderView->vieworg - *savePointModded).ToString());
+	idVec3 vectorA = (*savePointModded - *playerViewModded);
+	// Vector b is player View Modded .
+	float beofreAcos = (vectorA* *playerViewModded) / (vectorA.Length() * playerViewModded->Length());
+	float rad = acos(beofreAcos);
+	gameLocal.Printf("Vector Calculated: %s\n", vectorA.ToString());
+	gameLocal.Printf("Vector lensqr: %f\n", vectorA.LengthSqr());
+	gameLocal.Printf("Vector length: %f\n", vectorA.Length());
+	gameLocal.Printf("before Acos : %f\n", beofreAcos);
+	gameLocal.Printf("Vector A Yaw: %f\n", vectorA.ToYaw());
+	gameLocal.Printf("Vector B Yaw: %f\n", playerViewModded->ToYaw());
+	gameLocal.Printf("Vector Subtraction: %f\n", vectorA.ToYaw() - playerViewModded->ToYaw());
+
+	gameLocal.Printf("Radian Calculated: %f", rad);
+	gameLocal.Printf("%s:%i: player Yaw: %f\n", __FILE__, __LINE__,owner->renderView->viewaxis.ToAngles().Normalize360().yaw);
+	gameLocal.Printf("%s:%i: Cos: %f\n", __FILE__, __LINE__, (savePointModded - playerViewModded));
+
+	*/
 	if (spawnArgs.GetBool("teleport_player")){
 		// IF Teleport. then teleport player. 
 		gameLocal.Printf(collision.endpos.ToString());
