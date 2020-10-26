@@ -232,7 +232,7 @@ void UpdateGuiParms( idUserInterface *gui, const idDict *args ) {
 	if ( gui == NULL || args == NULL ) {
 		return;
 	}
-	gameLocal.Printf("%s:%i: GOT HERE\n", __FILE__, __LINE__);
+	//gameLocal.Printf("%s:%i: GOT HERE\n", __FILE__, __LINE__);
 	const idKeyValue *kv = args->MatchPrefix( "gui_parm", NULL );
 	while( kv ) {
 		gui->SetStateString( kv->GetKey(), common->GetLocalizedString( kv->GetValue() ) );
@@ -881,7 +881,7 @@ void idEntity::Restore( idRestoreGame *savefile ) {
 	savefile->ReadRenderEntity( renderEntity, &spawnArgs );
 // RAVEN END
 	savefile->ReadInt( modelDefHandle );
-	gameLocal.Printf("%s:%i: GOT HERE, RestoreGame %i\n", __FILE__, __LINE__,modelDefHandle);
+	//gameLocal.Printf("%s:%i: GOT HERE, RestoreGame %i\n", __FILE__, __LINE__,modelDefHandle);
 	savefile->ReadRefSound( refSound );
 	
 // RAVEN BEGIN
@@ -1649,7 +1649,7 @@ void idEntity::Present( void ) {
 	
 	// add to refresh list
 	if ( modelDefHandle == -1 ) {
-		gameLocal.Printf("%s:%i: GOT HERE\n", __FILE__, __LINE__);
+		//gameLocal.Printf("%s:%i: GOT HERE Entity: %s\n", __FILE__, __LINE__,this->GetEntityDefName());
 		modelDefHandle = gameRenderWorld->AddEntityDef( &renderEntity );
 	} else {
 		//gameLocal.Printf("%s:%i: GOT HERE\n", __FILE__, __LINE__);
