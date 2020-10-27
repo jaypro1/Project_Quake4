@@ -4,6 +4,8 @@ windowDef Desktop
 	visible	1
 	nocursor	1
 	menugui	0
+	)	)
+	/	2
 	definevec4	"ws_on"	1,0.5,0,1
 	definevec4	"ws_off"	0.658,0.639,0.376,0.6
 	definevec4	"ws_glowon"	0.7,0.8,0.5,1
@@ -22,7 +24,7 @@ windowDef Desktop
 	float	"hidden"	0
 	float	"deathCount"	0
 	definefloat	"showGunInfo"	1
-	definefloat	"switchLeft"	(640-((gui::weaponcount*30)-2))/2
+	definefloat	"switchLeft"	(640-((gui::weaponcount*30)-2
 
 	onInit {
 		namedEvent "updateHealth";
@@ -2326,7 +2328,28 @@ windowDef Desktop
 			visible	1
 			background	"gfx/compass"
 			matcolor	1,.1,.1,.7
-			rotate  ("gui::compass_angle" - 90)
+			rotate	("gui::compass_angle" - 90)
+		}
+		windowDef location
+		{
+			rect	420,68,220,25
+			visible	1
+			matcolor	1,.1,.1,.7
+			text	"gui::location"
+		}
+		windowDef materialName
+		{
+			rect	475,125,88,28
+			visible	1
+			matcolor	1,.1,.1,.7
+			text	"Material: "
+		}
+		windowDef material
+		{
+			rect	569,125,64,28
+			visible	1
+			matcolor	1,.1,.1,.7
+			text	"gui::material"
 		}
 	}
 	windowDef fade
