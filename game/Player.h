@@ -200,6 +200,7 @@ public:
 // squirrel: Mode-agnostic buymenus
 	int						carryOverWeapons;
 // RITUAL END
+	int						material;
 	int						powerups;
 	int						armor;
 	int						maxarmor;
@@ -340,7 +341,8 @@ public:
 
  	idUserInterface *		hud;				// Common hud
 	idUserInterface *		mphud;				// hud overlay containing MP elements
-	
+	idUserInterface *		buymenu;
+
 	idUserInterface *		objectiveSystem;
 	idUserInterface *		cinematicHud;
 	bool					objectiveSystemOpen;

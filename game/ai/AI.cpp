@@ -1627,6 +1627,16 @@ void idAI::Killed( idEntity *inflictor, idEntity *attacker, int damage, const id
 	gameLocal.Printf("%s:%i: 1) inflictor: %s, attacker: %s deadFlag: %d\n", __FILE__, __LINE__, inflictor->GetName(), attacker->GetName(), aifl.dead);
 	gameLocal.Printf("%s:%i: 2) inflictor: %s, attacker: %s Health: %d\n", __FILE__, __LINE__, inflictor->GetEntityDefName(), attacker->GetEntityDefName(), inflictor->health);
 	gameLocal.Printf("%s:%i: 3) Current Entity: %s, Health: %d \n", __FILE__, __LINE__, this->GetEntityDefName(), this->health);
+	// This is where the material should be given to the pplayer. 
+	gameLocal.Printf("Killer Class Type: %d %d:::: playerID: %d\n", attacker->entityDefNumber, attacker->entityNumber,gameLocal.localClientNum);
+	if (attacker->entityNumber == gameLocal.localClientNum){
+		// IS player
+		gameLocal.Printf("%s:%i: Adding Material %d\n", __FILE__, __LINE__, gameLocal.GetLocalPlayer()->inventory.material);
+
+		gameLocal.GetLocalPlayer()->inventory.material += 200;
+		gameLocal.Printf("%s:%i: Done Adding Material %d\n", __FILE__, __LINE__, gameLocal.GetLocalPlayer()->inventory.material);
+
+	}
 	
 	aifl.dead = true;
 

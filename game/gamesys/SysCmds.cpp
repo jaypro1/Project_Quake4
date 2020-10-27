@@ -2924,9 +2924,12 @@ void Cmd_AddIcon_f( const idCmdArgs& args ) {
 // squirrel: Mode-agnostic buymenus
 void Cmd_ToggleBuyMenu_f( const idCmdArgs& args ) {
 	idPlayer* player = gameLocal.GetLocalPlayer();
-	if ( player && player->CanBuy() )
+	gameLocal.Printf("%s:%i: ToggleBuyMenu\n", __FILE__, __LINE__);
+
+	if ( player)
 	{
-		gameLocal.mpGame.OpenLocalBuyMenu();
+		player->PerformImpulse(IMPULSE_23);
+		//gameLocal.mpGame.OpenLocalBuyMenu();
 	}
 }
 
@@ -2936,6 +2939,7 @@ void Cmd_BuyItem_f( const idCmdArgs& args ) {
 		common->Printf( "ERROR: Cmd_BuyItem_f() failed, since GetLocalPlayer() was NULL.\n", player );
 		return;
 	}
+	gameLocal.Printf("%s:%i: GOT HERE\n", __FILE__, __LINE__);
 
 	player->GenerateImpulseForBuyAttempt( args.Argv(1) );
 }

@@ -404,6 +404,8 @@ void idInventory::Save( idSaveGame *savefile ) const {
 	savefile->WriteInt( powerups );
 	savefile->WriteInt( armor );
 	savefile->WriteInt( maxarmor );
+	
+	savefile->WriteInt(material);
 
 	for( i = 0; i < MAX_AMMO; i++ ) {
 		savefile->WriteInt( ammo[ i ] );
@@ -484,7 +486,7 @@ void idInventory::Restore( idRestoreGame *savefile ) {
 	savefile->ReadInt( powerups );
 	savefile->ReadInt( armor );
 	savefile->ReadInt( maxarmor );
-
+	savefile->ReadInt( material );
 	for( i = 0; i < MAX_AMMO; i++ ) {
 		savefile->ReadInt( ammo[ i ] );
 	}
@@ -1497,7 +1499,8 @@ idPlayer::Init
 */
 void idPlayer::Init( void ) {
 	const char			*value;
-	
+	gameLocal.Printf("%s:%i: Player INIT ******\n", __FILE__, __LINE__);
+	inventory.material = 200;
 	noclip					= false;
 	godmode					= false;
 	godmodeDamage			= 0;
@@ -1840,7 +1843,8 @@ void idPlayer::Spawn( void ) {
 		// load HUD
 		hud = NULL;
 		mphud = NULL;
- 		
+		buymenu = NULL;
+
 		overlayHud = NULL;
 		overlayHudTime = 0;
 		
@@ -1859,6 +1863,12 @@ void idPlayer::Spawn( void ) {
 				gameLocal.Warning( "idPlayer::Spawn() - No MP hud overlay while in MP.");
 			}
 		}
+		if (spawnArgs.GetString("buymenu", "", temp)){
+			buymenu = uiManager->FindGui(temp, true, false, true);
+		}
+		else {
+			gameLocal.Warning("idPlayer::Spawn() - No buymenu for player.");
+		}
 
 		if ( hud ) {
 			hud->Activate( true, gameLocal.time );
@@ -1867,7 +1877,9 @@ void idPlayer::Spawn( void ) {
 		if ( mphud ) {
 			mphud->Activate( true, gameLocal.time );
 		}
-
+		if (buymenu){
+			buymenu->Activate(true, gameLocal.time);
+		}
 		// load cursor
 		GetCursorGUI();
 		if ( cursor ) {
@@ -2994,6 +3006,9 @@ void idPlayer::RestorePersistantInfo( void ) {
  	}
  
 	spawnArgs.Copy( gameLocal.persistentPlayerInfo[entityNumber] );
+	gameLocal.Printf("%s:%i: Restore Persistant Info\n", __FILE__, __LINE__);
+	gameLocal.persistentPlayerInfo[entityNumber].Print();
+	gameLocal.Printf("%s:%i: End Here\n", __FILE__, __LINE__);
 
 	inventory.RestoreInventory( this, spawnArgs );
  	health = spawnArgs.GetInt( "health", "100" );
@@ -3391,7 +3406,12 @@ void idPlayer::UpdateHudStats( idUserInterface *_hud ) {
 	int temp;
 	
 	assert ( _hud );
+	temp = _hud->State().GetInt("material", "0");
+	if (temp != inventory.material){
+		_hud->SetStateInt("material", temp);
+	}
 
+	_hud->SetStateInt("material", inventory.material);
 	temp = _hud->State().GetInt ( "player_health", "-1" );
 	if ( temp != health ) {		
 		_hud->SetStateInt   ( "player_healthDelta", temp == -1 ? 0 : (temp - health) );
@@ -3628,6 +3648,7 @@ void idPlayer::DrawHUD( idUserInterface *_hud ) {
 		//gameLocal.Printf("%s:%i: va X: %f ,,, vc X: %f\n", __FILE__, __LINE__, va.ToAngles().yaw, vc.ToAngles().yaw);
 
 		hud->SetStateFloat("compass_angle", va.ToAngles().yaw - vc.ToAngles().yaw);
+		hud->SetStateInt("material", inventory.material);
 	}
 	if ( !gameLocal.GetLocalPlayer() ) {
 		// server netdemo
@@ -7209,7 +7230,7 @@ void idPlayer::UpdateFocus( void ) {
 					}
 					ui->SetStateInt( iname, 1 );
 				}
-
+				
 				for( j = 0; j < inventory.pdaSecurity.Num(); j++ ) {
 					const char *p = inventory.pdaSecurity[ j ];
 
@@ -8466,6 +8487,7 @@ void idPlayer::PerformImpulse( int impulse ) {
 	}
 
 	if ( impulse >= IMPULSE_0 && impulse <= IMPULSE_12 ) {
+
 		SelectWeapon( impulse, false );
 		return;
 	}
@@ -8560,6 +8582,20 @@ void idPlayer::PerformImpulse( int impulse ) {
    			}
    			break;
    		}
+		case IMPULSE_23: {
+			if (gameLocal.isClient || entityNumber == gameLocal.localClientNum) {
+				gameLocal.Printf("%s:%i: IMPULSE_23\n", __FILE__, __LINE__);
+				
+				if (buymenu && buymenu != focusUI){
+					focusUI = buymenu;
+				}
+				else{
+					focusUI = NULL;
+				}
+			
+			}
+			break;
+		}
 				
 		case IMPULSE_28: {
  			if ( gameLocal.isClient || entityNumber == gameLocal.localClientNum ) {
@@ -8611,6 +8647,8 @@ void idPlayer::PerformImpulse( int impulse ) {
 // RITUAL END
 
 		case IMPULSE_50: {
+			gameLocal.Printf("%s:%i: Command when Torch %d, with size %d\n", __FILE__, __LINE__,usercmd.buttons,sizeof(usercmd.buttons));
+
 			ToggleFlashlight ( );
 			break;
 		}
@@ -8683,12 +8721,19 @@ void idPlayer::HandleObjectiveInput() {
 	}
 #else
 	if ( ( usercmd.buttons & BUTTON_SCORES ) != 0 && !objectiveSystemOpen && !gameLocal.inCinematic ) {
+		gameLocal.Printf("%s:%i: Handle Objectives: %i\n", __FILE__, __LINE__, usercmd.buttons);
+
 		ToggleObjectives ( );
 	} else if ( ( usercmd.buttons & BUTTON_SCORES ) == 0 && objectiveSystemOpen ) {
+		gameLocal.Printf("%s:%i: Handle Objectives: %i\n", __FILE__, __LINE__, usercmd.buttons);
+
 		ToggleObjectives ( );
 	} else if ( objectiveSystemOpen && gameLocal.inCinematic ) {
+		gameLocal.Printf("%s:%i: Handle Objectives: %i\n", __FILE__, __LINE__, usercmd.buttons);
+
 		ToggleObjectives ( );
 	}
+
 #endif
 }
 
@@ -8723,6 +8768,7 @@ void idPlayer::EvaluateControls( void ) {
 	}
 
 	if ( ( usercmd.flags & UCF_IMPULSE_SEQUENCE ) != ( oldFlags & UCF_IMPULSE_SEQUENCE ) )  {
+
 		PerformImpulse( usercmd.impulse );
 	}
 
@@ -9176,7 +9222,7 @@ void idPlayer::UpdateHud( void ) {
 	if ( entityNumber != gameLocal.localClientNum ) {
 		return;
 	}
-
+	hud->SetStateInt("material", inventory.material);
 	// FIXME: this is here for level ammo balancing to see pct of hits 
 	hud->SetStateInt( "g_showProjectilePct", g_showProjectilePct.GetInteger() );
 	if ( numProjectilesFired ) {
@@ -9570,7 +9616,7 @@ void idPlayer::Think( void ) {
 	}
 
 	UpdateAir();
-	
+	//gameLocal.Printf("HI updateing HUD now");
 	UpdateHud();
 
 	UpdatePowerUps();
@@ -13095,6 +13141,7 @@ void idPlayer::SetInitialHud ( void ) {
 	if ( !mphud || !gameLocal.isMultiplayer || gameLocal.GetLocalPlayer() != this ) {
 		return;
 	}
+	gameLocal.Printf("%s:%i: Got Here INiTIAL HUD\n", __FILE__, __LINE__);
 
 	mphud->SetStateInt( "gametype", gameLocal.gameType );
 
