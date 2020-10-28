@@ -342,6 +342,7 @@ public:
  	idUserInterface *		hud;				// Common hud
 	idUserInterface *		mphud;				// hud overlay containing MP elements
 	idUserInterface *		buymenu;
+	bool					guiInteraction;
 
 	idUserInterface *		objectiveSystem;
 	idUserInterface *		cinematicHud;
@@ -614,6 +615,7 @@ public:
 
 // RITUAL BEGIN
 // squirrel: Mode-agnostic buymenus
+	void					guiImpulse(int impulse);
 	void					GenerateImpulseForBuyAttempt( const char* itemName );
 	bool					AttemptToBuyItem( const char* itemName );
 	bool					AttemptToBuyTeamPowerup( const char* itemName );

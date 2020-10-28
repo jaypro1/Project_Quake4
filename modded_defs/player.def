@@ -646,43 +646,58 @@ entityDef player_marine
 	"weapon1_best"						"1"
 	"weapon1_cycle"						"1"
 	"weapon1_flashlight"					"1"
+	"weapon_machinegun"					"100"
 
 	"def_weapon2"						"weapon_shotgun"
 	"weapon2_best"						"1"
 	"weapon2_cycle"						"1"
 	"weapon2_flashlight"					"0"
+	"weapon_shotgun"					"100"
 
 	"def_weapon3"						"weapon_hyperblaster"
 	"weapon3_best"						"1"
 	"weapon3_cycle"						"1"
+	"weapon_hyperblaster"				"200"
 
 	"def_weapon4"						"weapon_grenadelauncher"
 	"weapon4_best"						"0"
 	"weapon4_cycle"						"1"
+	"weapon_grenadelauncher"			"200"
 
 	"def_weapon5"						"weapon_nailgun"
 	"weapon5_best"						"1"
 	"weapon5_cycle"						"1"
+	"weapon_nailgun"					"200"
 
 	"def_weapon6"						"weapon_rocketlauncher"
 	"weapon6_best"						"0"
 	"weapon6_cycle"						"1"
+	"weapon_rocketlauncher"				"400"
 
 	"def_weapon7"						"weapon_railgun"
 	"weapon7_best"						"0"
 	"weapon7_cycle"						"1"
+	"weapon_railgun"					"300"
 
 	"def_weapon8"						"weapon_lightninggun"
 	"weapon8_best"						"1"
 	"weapon8_cycle"						"1"
+	"weapon_lightninggun"				"400"
 
 	"def_weapon9"						"weapon_dmg"
 	"weapon9_best"						"0"
 	"weapon9_cycle"						"1"
+	"weapon_dmg"						"600"
 
 	"def_weapon10"						"weapon_napalmgun"
 	"weapon10_best"						"0"
 	"weapon10_cycle"					"1"	
+	"weapon_napalmgun"					"600"
+
+	// Heavy Armor
+	"item_armor_large"					"200"
+	//refill
+	"ammorefill"						"100"
 
 	"mtr_wound"						"textures/decals/hurt02"
 	"mtr_splat"						"textures/decals/dsplat2"

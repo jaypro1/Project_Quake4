@@ -408,6 +408,7 @@ void GiveStuffToPlayer( idPlayer* player, const char* name, const char* value )
 	int			i;
 	bool		give_all;
 //	idPlayer* player = gameLocal.GetLocalPlayer();
+	gameLocal.Printf("%s:%i:Give Stuff to Player: %s\n", __FILE__, __LINE__,name);
 
 	if( !player || !name )	{
 		return;

@@ -1844,7 +1844,7 @@ void idPlayer::Spawn( void ) {
 		hud = NULL;
 		mphud = NULL;
 		buymenu = NULL;
-
+		guiInteraction = false;
 		overlayHud = NULL;
 		overlayHudTime = 0;
 		
@@ -1863,23 +1863,35 @@ void idPlayer::Spawn( void ) {
 				gameLocal.Warning( "idPlayer::Spawn() - No MP hud overlay while in MP.");
 			}
 		}
-		if (spawnArgs.GetString("buymenu", "", temp)){
-			buymenu = uiManager->FindGui(temp, true, false, true);
-		}
-		else {
-			gameLocal.Warning("idPlayer::Spawn() - No buymenu for player.");
-		}
+		
 
 		if ( hud ) {
 			hud->Activate( true, gameLocal.time );
+			hud->SetStateString("field_credits", va("%i", (int)inventory.material));
+			hud->SetStateInt("price_machinegun", GetItemCost("weapon_machinegun"));
+			hud->SetStateInt("price_shotgun", GetItemCost("weapon_shotgun"));
+			hud->SetStateInt("price_hyperblaster", GetItemCost("weapon_hyperblaster"));
+			hud->SetStateInt("price_grenadelauncher", GetItemCost("weapon_grenadelauncher"));
+			hud->SetStateInt("price_nailgun", GetItemCost("weapon_nailgun"));
+			hud->SetStateInt("price_rocketlauncher", GetItemCost("weapon_rocketlauncher"));
+			hud->SetStateInt("price_railgun", GetItemCost("weapon_railgun"));
+			hud->SetStateInt("price_lightninggun", GetItemCost("weapon_lightninggun"));
+			hud->SetStateInt( "price_dmg", GetItemCost( "weapon_dmg" ) );
+			hud->SetStateInt("price_napalmgun", GetItemCost("weapon_napalmgun"));
+
+			//hud->SetStateInt("price_lightarmor", GetItemCost("item_armor_small"));
+			hud->SetStateInt("price_heavyarmor", GetItemCost("item_armor_large"));
+			hud->SetStateInt("price_ammorefill", GetItemCost("ammorefill"));
+
+			//buymenu->SetStateInt("price_special0", GetItemCost("ammo_regen"));
+			//buymenu->SetStateInt("price_special1", GetItemCost("health_regen"));
+			//buymenu->SetStateInt("price_special2", GetItemCost("damage_boost"));
 		}
 
 		if ( mphud ) {
 			mphud->Activate( true, gameLocal.time );
 		}
-		if (buymenu){
-			buymenu->Activate(true, gameLocal.time);
-		}
+		
 		// load cursor
 		GetCursorGUI();
 		if ( cursor ) {
@@ -8174,11 +8186,8 @@ GetItemCost
 ==============
 */
 int idPlayer::GetItemCost( const char* itemName ) {
-	if ( !itemCosts ) {
-		assert( false );
-		return 99999;
-	}
-	return itemCosts->dict.GetInt( itemName, "99999" );
+	
+	return spawnArgs.GetInt( itemName, "99999" );
 }
 
 /*
@@ -8206,7 +8215,7 @@ int GetItemBuyImpulse( const char* itemName )
 		{ "weapon_lightninggun",			IMPULSE_107, },
 		//									IMPULSE_108 - Unused
 		{ "weapon_napalmgun",				IMPULSE_109, },
-		//		{ "weapon_dmg",						IMPULSE_110, },
+		{ "weapon_dmg",						IMPULSE_110, },
 		//									IMPULSE_111 - Unused
 		//									IMPULSE_112 - Unused
 		//									IMPULSE_113 - Unused
@@ -8242,6 +8251,10 @@ int GetItemBuyImpulse( const char* itemName )
 bool idPlayer::CanBuyItem( const char* itemName )
 {
 	itemBuyStatus_t buyStatus = ItemBuyStatus( itemName );
+	gameLocal.Printf("%s:%i: %i\n", __FILE__, __LINE__, buyStatus == IBS_CAN_BUY);
+	gameLocal.Printf("%s:%i: buyStatus%i\n", __FILE__, __LINE__, buyStatus);
+
+
 	return( buyStatus == IBS_CAN_BUY );
 }
 
@@ -8312,7 +8325,7 @@ itemBuyStatus_t idPlayer::ItemBuyStatus( const char* itemName )
 		return IBS_ALREADY_HAVE;
 
 	int cost = GetItemCost(itemName);
-	if ( cost > (int)buyMenuCash )
+	if ( cost > (int)inventory.material )
 	{
 		return IBS_CANNOT_AFFORD;
 	}
@@ -8410,6 +8423,7 @@ bool idPlayer::AttemptToBuyItem( const char* itemName )
 	}
 
 	int itemCost = GetItemCost( itemName );
+	gameLocal.Printf("%s:%i: itemName %s, ItemCost: %d\n", __FILE__, __LINE__,itemName,itemCost);
 
 	/// Check if the player is allowed to buy this item
 	if( !CanBuyItem( itemName ) )
@@ -8418,11 +8432,11 @@ bool idPlayer::AttemptToBuyItem( const char* itemName )
 	}
 
 	const char* playerName = GetUserInfo()->GetString( "ui_name" );
-	common->DPrintf( "Player %s about to buy item %s; player has %d (%g) credits, cost is %d\n", playerName, itemName, (int)buyMenuCash, buyMenuCash, itemCost );
+	common->DPrintf("Player %s about to buy item %s; player has %d (%g) credits, cost is %d\n", playerName, itemName, (int)inventory.material, inventory.material, itemCost);
 
-	buyMenuCash -= (float)itemCost;
+	inventory.material -= (float)itemCost;
 
-	common->DPrintf( "Player %s just bought item %s; player now has %d (%g) credits, cost was %d\n", playerName, itemName, (int)buyMenuCash, buyMenuCash, itemCost );
+	common->DPrintf("Player %s just bought item %s; player now has %d (%g) credits, cost was %d\n", playerName, itemName, (int)inventory.material, inventory.material, itemCost);
 
 
 	// Team-based effects
@@ -8431,9 +8445,10 @@ bool idPlayer::AttemptToBuyItem( const char* itemName )
 	if ( itemNameStr == "ammo_regen" || itemNameStr == "health_regen" || itemNameStr == "damage_boost" ) {
 		return AttemptToBuyTeamPowerup(itemName);
 	}
+	gameLocal.Printf("%s:%i: GOT HERE\n", __FILE__, __LINE__);
 
 	GiveStuffToPlayer( this, itemName, NULL );
-	gameLocal.mpGame.RedrawLocalBuyMenu();
+	//gameLocal.mpGame.RedrawLocalBuyMenu();
 	return true;
 }
 
@@ -8485,8 +8500,13 @@ void idPlayer::PerformImpulse( int impulse ) {
 		msg.WriteBits( impulse, IMPULSE_NUMBER_OF_BITS );
 		ClientSendEvent( EVENT_IMPULSE, &msg );
 	}
-
+	if (guiInteraction){
+		// Forward this interaction to gui 
+		guiImpulse(impulse);
+		return;
+	}
 	if ( impulse >= IMPULSE_0 && impulse <= IMPULSE_12 ) {
+		gameLocal.Printf("Weapon Inpulse: %d\n", impulse);
 
 		SelectWeapon( impulse, false );
 		return;
@@ -8585,14 +8605,8 @@ void idPlayer::PerformImpulse( int impulse ) {
 		case IMPULSE_23: {
 			if (gameLocal.isClient || entityNumber == gameLocal.localClientNum) {
 				gameLocal.Printf("%s:%i: IMPULSE_23\n", __FILE__, __LINE__);
-				
-				if (buymenu && buymenu != focusUI){
-					focusUI = buymenu;
-				}
-				else{
-					focusUI = NULL;
-				}
-			
+				guiInteraction = true;
+				hud->SetStateInt("guiInteraction", guiInteraction? 1 : 0);
 			}
 			break;
 		}
@@ -14134,4 +14148,58 @@ int idPlayer::CanSelectWeapon(const char* weaponName)
 	return weaponNum;
 }
 
+void idPlayer::guiImpulse(int impulse){
+	gameLocal.Printf("guiImpulse: %d\n", impulse);
+
+	switch (impulse + 1){
+		case 1:
+			//Armor. 
+			//PerformImpulse(IMPULSE_119);
+			AttemptToBuyItem("item_armor_large");
+			break;
+		case 2:
+			//PerformImpulse(IMPULSE_101);
+			AttemptToBuyItem("weapon_machinegun");
+			break;
+		case 3:
+			//PerformImpulse(IMPULSE_100);
+			AttemptToBuyItem("weapon_shotgun");
+			break;
+		case 4:
+			//PerformImpulse(IMPULSE_102);
+			AttemptToBuyItem("weapon_hyperblaster");
+			break;
+		case 5:
+			//PerformImpulse(IMPULSE_103);
+			AttemptToBuyItem("weapon_grenadelauncher");
+			break;
+		case 6:
+			//PerformImpulse(IMPULSE_104);
+			AttemptToBuyItem("weapon_nailgun");
+			break;
+		case 7:
+			//PerformImpulse(IMPULSE_105);
+			AttemptToBuyItem("weapon_rocketlauncher");
+			break;
+		case 8:
+			//PerformImpulse(IMPULSE_106);
+			AttemptToBuyItem("weapon_railgun");
+			break;
+		case 9:
+			//PerformImpulse(IMPULSE_107);
+			AttemptToBuyItem("weapon_lightninggun");
+			break;
+		case 10:
+			//PerformImpulse(IMPULSE_110);
+			AttemptToBuyItem("weapon_dmg");
+			break;
+		case 14:
+			// Reload. 
+			AttemptToBuyItem("ammorefill");
+		case 24:
+			guiInteraction = false;
+			hud->SetStateInt("guiInteraction", guiInteraction ? 1 : 0);
+			break;
+	}
+}
 // RITUAL END

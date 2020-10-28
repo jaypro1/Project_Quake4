@@ -440,6 +440,7 @@ windowDef Desktop
 		textscale	0.25
 		textstyle	1
 		forecolor	1,1,1,0.6
+		visible	1
 	}
 	windowDef ViewComments
 	{
@@ -2317,7 +2318,7 @@ windowDef Desktop
 		}
 
 	}
-	windowDef compass_container
+	windowDef modpack_container
 	{
 		rect	0,0,640,480
 		visible	1
@@ -2330,23 +2331,236 @@ windowDef Desktop
 			matcolor	1,.1,.1,.7
 			rotate	("gui::compass_angle" - 90)
 		}
-		windowDef location
+		windowDef game_shop
 		{
-			rect	420,68,220,25
-			visible	1
+			rect	0,0,640,480
 			matcolor	1,.1,.1,.7
-			text	"gui::location"
+			visible	"gui::guiInteraction"
+			windowDef title
+			{
+				rect	7,46,282,32
+				text	"Press Number to Print:"
+				visible	1
+				forecolor	1,1,1,1
+				textscale	0.4
+				font	"fonts/marine"
+			}
+			windowDef weaponBrowse
+			{
+				rect	25,84,302,300
+				visible	1
+				windowDef armor
+				{
+					rect	6,6,286,30
+					visible	1
+					forecolor	1,1,1,1
+					windowDef title
+					{
+						rect	7,3,170,24
+						visible	1
+						text	"1) Armor: "
+					}
+					windowDef price
+					{
+						rect	182,3,98,24
+						visible	1
+						text	"gui::price_heavyarmor"
+					}
+				}
+				windowDef machinegun
+				{
+					rect	6,32,286,30
+					visible	1
+					forecolor	1,1,1,1
+					windowDef title
+					{
+						rect	7,3,170,24
+						visible	1
+						text	"2) Machine Gun: "
+					}
+					windowDef price
+					{
+						rect	182,3,98,24
+						visible	1
+						text	"gui::price_machinegun"
+					}
+				}
+				windowDef shotgun
+				{
+					rect	6,58,286,30
+					visible	1
+					forecolor	1,1,1,1
+					windowDef title
+					{
+						rect	7,3,170,24
+						visible	1
+						text	"3) Shotgun: "
+					}
+					windowDef price
+					{
+						rect	182,3,98,24
+						visible	1
+						text	"gui::price_shotgun"
+					}
+					
+				}
+				windowDef hyperblaster
+				{
+					rect	6,84,286,30
+					visible	1
+					forecolor	1,1,1,1
+					windowDef title
+					{
+						rect	7,3,170,24
+						visible	1
+						text	"4) Hyperblaster Gun: "
+					}
+					windowDef price
+					{
+						rect	182,3,98,24
+						visible	1
+						text	"gui::price_hyperblaster"
+					}
+				}
+				windowDef grenadelauncher
+				{
+					rect	6,110,286,30
+					visible	1
+					forecolor	1,1,1,1
+					windowDef title
+					{
+						rect	7,3,170,24
+						visible	1
+						text	"5) Grenade Launcher: "
+					}
+					windowDef price
+					{
+						rect	182,3,98,24
+						visible	1
+						text	"gui::price_grenadelauncher"
+					}
+					
+				}
+				windowDef nailgun
+				{
+					rect	6,136,286,30
+					visible	1
+					forecolor	1,1,1,1
+					windowDef title
+					{
+						rect	7,3,170,24
+						visible	1
+						text	"6) Nailgun: "
+					}
+					windowDef price
+					{
+						rect	182,3,98,24
+						visible	1
+						text	"gui::price_nailgun"
+					}
+				}
+				windowDef rocketlauncher
+				{
+					rect	6,162,286,30
+					visible	1
+					forecolor	1,1,1,1
+					windowDef title
+					{
+						rect	7,3,170,24
+						visible	1
+						text	"7) Rocket Launcher: "
+					}
+					windowDef price
+					{
+						rect	182,3,98,24
+						visible	1
+						text	"gui::price_rocketlauncher"
+					}
+				}
+				windowDef railgun
+				{
+					rect	6,188,286,30
+					visible	1
+					forecolor	1,1,1,1
+					windowDef title
+					{
+						rect	7,3,170,24
+						visible	1
+						text	"8) Rail Gun: "
+					}
+					windowDef price
+					{
+						rect	182,3,98,24
+						visible	1
+						text	"gui::price_railgun"
+					}
+				}
+				windowDef lightninggun
+				{
+					rect	6,214,286,30
+					visible	1
+					forecolor	1,1,1,1
+					windowDef title
+					{
+						rect	7,3,170,24
+						visible	1
+						text	"9) Lightning Gun: "
+					}
+					windowDef price
+					{
+						rect	182,3,98,24
+						visible	1
+						text	"gui::price_lightninggun"
+					}
+				}
+				windowDef dmg
+				{
+					rect	6,240,286,30
+					visible	1
+					forecolor	1,1,1,1
+					windowDef title
+					{
+						rect	7,3,170,24
+						visible	1
+						text	"0) DMG: "
+					}
+					windowDef price
+					{
+						rect	182,3,98,24
+						visible	1
+						text	"gui::price_dmg"
+					}
+				}
+				windowDef ammorefill
+				{
+					rect	6,266,286,30
+					visible	1
+					forecolor	1,1,1,1
+					windowDef title
+					{
+						rect	7,3,170,24
+						visible	1
+						text	"r) Ammo Refill: "
+					}
+					windowDef price
+					{
+						rect	182,3,98,24
+						visible	1
+						text	"gui::price_ammorefill"
+					}
+				}
+			}
 		}
 		windowDef materialName
 		{
-			rect	475,125,88,28
+			rect	483,82,88,28
 			visible	1
 			matcolor	1,.1,.1,.7
 			text	"Material: "
 		}
 		windowDef material
 		{
-			rect	569,125,64,28
+			rect	572,82,64,28
 			visible	1
 			matcolor	1,.1,.1,.7
 			text	"gui::material"
