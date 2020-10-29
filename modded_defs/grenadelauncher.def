@@ -285,7 +285,7 @@ entityDef projectile_grenade
 
 entityDef damage_grenadeDirect 
 {
-	"damage"					"125"
+	"damage"					"150"
 	"gib"						"1"
 
 	"deathPush"					"200"
@@ -307,8 +307,8 @@ entityDef damage_grenadeDirect_mp
 entityDef damage_grenadeSplash 
 {
 	"damage"					"200"
-	"radius"					"250"
-	"knockback"					"100"
+	"radius"					"500"
+	"knockback"					"200"
 	"push"						"10000"
 	"gib"						"0"
 

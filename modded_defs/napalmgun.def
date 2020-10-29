@@ -73,7 +73,7 @@ entityDef weapon_napalmgun
 	"inv_icon"					"gfx/guis/hud/icons/item_fire.tga"
 	"inv_name"					"Napalm Launcher"	
 
-	"fireRate"					".8"
+	"fireRate"					".3"
 //	"reloadRate"				".1"
 	"spread"					"0"
 	"dirOffset"					"0 0 .1"
@@ -267,7 +267,7 @@ entityDef projectile_napalm
 	"angular_friction"			"0"
 	"contact_friction"			"10"
 	//"bounce"					".65"
-	"gravity"					"1.2"
+	"gravity"					".6"
 	"fuse"						"2.5"
 								
 	"detonate_on_fuse"			"1"

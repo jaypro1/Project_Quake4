@@ -265,7 +265,7 @@ entityDef weaponmod_hyperblaster_bounce2
 entityDef damage_hyperblaster
 {
 	"inherit"					"damage_blaster"
-	"damage"					"14"
+	"damage"					"50"
 
 	"deathPush"					"100"
 	"deathPushMin"				"3000 350"
@@ -281,7 +281,7 @@ entityDef damage_hyperblaster_mp
 entityDef damage_hyperblaster_splash
 {
 	"damage"					"10"
-	"radius"					"35"
+	"radius"					"100"
 	"knockback"					"5"
 	"push"						"0"
 	"gib"						"0"

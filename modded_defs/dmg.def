@@ -300,7 +300,7 @@ entityDef projectile_dmg
 	"def_radius_damage"			"damage_dmg_fly"
 	"damageRate"				".05"
 																											
-	"speed"						"250"
+	"speed"						"600"
 	
 	"delay_splash"				".45"
 	

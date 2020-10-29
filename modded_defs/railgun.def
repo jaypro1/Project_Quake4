@@ -84,7 +84,7 @@ entityDef weapon_railgun
   	"joint_view_barrel"			"srocket_muzzle_flash"
 	"joint_world_flash"			"muzzle_flash"
 
-	"fireRate"				"1.6"
+	"fireRate"				".3"
 	"spread"				"0"
 
 	"inv_weapon"				"weapon_railgun"
@@ -98,7 +98,7 @@ entityDef weapon_railgun
 
 	"ammoType"				"ammo_railgun"
 	"ammoRequired"				"1"
-	"clipSize"				"3"
+	"clipSize"				"30"
 	"lowAmmo"				"1"
 	"continuousFire"			"1"
 	"dryFireReload" 			"1"

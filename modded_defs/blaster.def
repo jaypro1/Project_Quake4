@@ -111,8 +111,8 @@ entityDef weapon_blaster
 	"muzzle_kick_angles"		"-5 0 0"
 	"muzzle_kick_offset"		"2 0 0"
 
-	"recoilTime"				"100"
-	"recoilAngles"				"-2 0 0"
+	"recoilTime"				"1"
+	"recoilAngles"				"-1 0 0"
 	
 	// ---------------------------- Flashlight ---------------------------------------
 	
@@ -310,7 +310,7 @@ entityDef projectile_blaster_charged
 entityDef damage_blaster
 {
 	"inherit"					"damage_bullet"
-	"damage"					"8"
+	"damage"					"16"
 
 	"fx_wound"					"effects/wounds/energy.fx"
 
@@ -322,14 +322,14 @@ entityDef damage_blaster
 entityDef damage_blaster_charged
 {
 	"inherit"					"damage_blaster"
-	"damage"					"50"
+	"damage"					"100"
 }
 
 entityDef damage_blastersplash_charged
 {
 	"inherit"					"damage_blaster"
 	
-	"damage"					"40"
+	"damage"					"80"
 	"radius"					"50"
 	"knockback"					"30"
 	"push"						"2500"
