@@ -1019,6 +1019,8 @@ void rvWeapon::Think ( void ) {
 	if ( viewModel ) {
 		// set the physics position and orientation
 		viewModel->GetPhysics()->SetOrigin( viewModelOrigin );
+		//gameLocal.Printf("%s:%i: GOT HERE, ViewModel Origin\n", __FILE__, __LINE__);
+
 		viewModel->GetPhysics()->SetAxis( viewModelAxis );
  		viewModel->UpdateVisuals();
 	} else {

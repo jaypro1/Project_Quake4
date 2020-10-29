@@ -200,6 +200,7 @@ public:
 // squirrel: Mode-agnostic buymenus
 	int						carryOverWeapons;
 // RITUAL END
+	int						material;
 	int						powerups;
 	int						armor;
 	int						maxarmor;
@@ -340,7 +341,11 @@ public:
 
  	idUserInterface *		hud;				// Common hud
 	idUserInterface *		mphud;				// hud overlay containing MP elements
-	
+	idUserInterface *		buymenu;
+	bool					guiInteraction;
+	idVec3					pointerLoc;
+	int						currentPointerIndex;
+
 	idUserInterface *		objectiveSystem;
 	idUserInterface *		cinematicHud;
 	bool					objectiveSystemOpen;
@@ -612,6 +617,7 @@ public:
 
 // RITUAL BEGIN
 // squirrel: Mode-agnostic buymenus
+	void					guiImpulse(int impulse);
 	void					GenerateImpulseForBuyAttempt( const char* itemName );
 	bool					AttemptToBuyItem( const char* itemName );
 	bool					AttemptToBuyTeamPowerup( const char* itemName );

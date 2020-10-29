@@ -49,7 +49,8 @@ void idWorldspawn::Spawn( void ) {
 			thread->DelayedStart( 0 );
 		}
 	}
-
+	gameLocal.Printf("%s:%i: GOT HERE\n", __FILE__, __LINE__);
+	spawnArgs.Print();
 	// call any functions specified in worldspawn
 	kv = spawnArgs.MatchPrefix( "call" );
 	while( kv != NULL ) {
@@ -62,6 +63,8 @@ void idWorldspawn::Spawn( void ) {
 		thread->DelayedStart( 0 );
 		kv = spawnArgs.MatchPrefix( "call", kv );
 	}
+	gameLocal.Printf("%s:%i: End World Spawn\n", __FILE__, __LINE__);
+
 }
 
 /*
