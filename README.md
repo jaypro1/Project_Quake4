@@ -18,3 +18,7 @@ To get more material, you have to personally kill enemies, which will give you 2
 The Compass Points to your first Objective. And Upon Getting near your objective location, it will change location to next objective. 
 There will be weapon placements all around the spawn, for you to prepare for your saving of the world.
 All Weapons have been give increased stats, to help you survive and save the world before it is too late. 
+
+Minor Details: <br>
+FYI: The NAIL GUN has been changed so, now it will teleport you to where ever the projectile is shot. 
+Scoping into Machine Gun will make it have increased damage. 
