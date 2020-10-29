@@ -1849,7 +1849,9 @@ void idPlayer::Spawn( void ) {
 		overlayHudTime = 0;
 		
 		objectiveSystem = NULL;
-
+		currentPointerIndex = 0;
+		pointerLoc = spawnArgs.GetVector(va("pointerLoc%d", currentPointerIndex), "0 0 0");
+		//gameLocal.Printf("ptr to string compass: %s", pointerLoc.ToString());
 		if ( spawnArgs.GetString( "hud", "", temp ) ) {
 			hud = uiManager->FindGui( temp, true, false, true );
 		} else {
@@ -3654,7 +3656,7 @@ void idPlayer::DrawHUD( idUserInterface *_hud ) {
 		//gameLocal.Printf("HUD Draw\n");
 		
 		idVec3 vp = GetRenderView()->vieworg;
-		idVec3 vs = *new idVec3(9188, -7000, 69);
+		idVec3 vs = pointerLoc;
 		idVec3 va = *new idVec3(vs - vp);
 		idVec3 vc = GetRenderView()->viewaxis.ToAngles().ToForward();
 		//gameLocal.Printf("%s:%i: va X: %f ,,, vc X: %f\n", __FILE__, __LINE__, va.ToAngles().yaw, vc.ToAngles().yaw);
@@ -6637,6 +6639,15 @@ Searches nearby locations
    	if ( hud ) {
  		idLocationEntity *locationEntity = gameLocal.LocationForPoint( GetEyePosition() );
  		if ( locationEntity ) {
+			if (gameLocal.time % 10000 == 0){
+				gameLocal.Printf("location: %s", locationEntity->GetLocation());
+			}
+			if ((GetEyePosition() - pointerLoc).Length() <= 100){
+				gameLocal.Printf("in Range of location Index: %d",currentPointerIndex);
+				currentPointerIndex += 1;
+				pointerLoc = spawnArgs.GetVector(va("pointerLoc%d", currentPointerIndex), "0 0 0");
+				
+			}
  			hud->SetStateString( "location", locationEntity->GetLocation() );
  		} else {
 // RAVEN BEGIN

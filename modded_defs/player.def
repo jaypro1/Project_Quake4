@@ -608,6 +608,10 @@ entityDef player_marine
 	"wristcomm"						"guis/wristcomm.gui"
 	"buymenu"						"guis/buymenu.gui"
 
+	"pointerLoc0"					"9132 -2623 84"
+	"pointerLoc1"					"8953 -3997 69"
+	"pointerLoc2"					"9132 -2623 84"
+
 	"blink_min"						"0.5"
 	"blink_max"						"4.8"
 

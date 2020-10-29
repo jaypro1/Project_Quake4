@@ -343,6 +343,8 @@ public:
 	idUserInterface *		mphud;				// hud overlay containing MP elements
 	idUserInterface *		buymenu;
 	bool					guiInteraction;
+	idVec3					pointerLoc;
+	int						currentPointerIndex;
 
 	idUserInterface *		objectiveSystem;
 	idUserInterface *		cinematicHud;
